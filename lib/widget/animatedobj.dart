@@ -23,23 +23,44 @@ class Circle {
     required this.dx,
     required this.dy,
   });
+
+  Circle copyWith({
+    double? x,
+    double? y,
+    double? dx,
+    double? dy,
+  }) {
+    return Circle(
+      color: color,
+      size: size,
+      x: x ?? this.x,
+      y: y ?? this.y,
+      endX: endX,
+      endY: endY,
+      dx: dx ?? this.dx,
+      dy: dy ?? this.dy,
+    );
+  }
 }
 
 class CircleAnimation extends StatefulWidget {
-  const CircleAnimation({super.key});
+  const CircleAnimation({Key? key}) : super(key: key);
 
   @override
   _CircleAnimationState createState() => _CircleAnimationState();
 }
 
 class _CircleAnimationState extends State<CircleAnimation> {
-  List<Circle> circles = [];
+  late List<Circle> circles;
   late Timer timer;
   Size? previousSize;
+  final Random _random = Random();
+  final int maxCircles = 10; // Limit maximum number of circles
 
   @override
   void initState() {
     super.initState();
+    circles = [];
     startAnimation();
   }
 
@@ -51,23 +72,25 @@ class _CircleAnimationState extends State<CircleAnimation> {
 
   void startAnimation() {
     timer = Timer.periodic(const Duration(milliseconds: 16), (Timer t) {
-      setState(() {
-        for (int i = 0; i < circles.length; i++) {
-          circles[i].x += circles[i].dx;
-          circles[i].y += circles[i].dy;
+      final List<Circle> updatedCircles = [];
+      for (final circle in circles) {
+        double newX = circle.x + circle.dx;
+        double newY = circle.y + circle.dy;
 
-          // Check if circle reaches the edges
-          if (circles[i].x < 0 ||
-              circles[i].x >
-                  MediaQuery.of(context).size.width - circles[i].size) {
-            circles[i].dx *= -1; // Reverse horizontal direction
-          }
-          if (circles[i].y < 0 ||
-              circles[i].y >
-                  MediaQuery.of(context).size.height - circles[i].size) {
-            circles[i].dy *= -1; // Reverse vertical direction
-          }
+        // Check if circle reaches the edges
+        if (newX < 0 ||
+            newX > MediaQuery.of(context).size.width - circle.size) {
+          circle.dx *= -1; // Reverse horizontal direction
         }
+        if (newY < 0 ||
+            newY > MediaQuery.of(context).size.height - circle.size) {
+          circle.dy *= -1; // Reverse vertical direction
+        }
+        updatedCircles.add(circle.copyWith(x: newX, y: newY));
+      }
+
+      setState(() {
+        circles = updatedCircles;
       });
     });
   }
@@ -84,32 +107,33 @@ class _CircleAnimationState extends State<CircleAnimation> {
   }
 
   void generateCircles() {
-    for (int i = 0; i < 10; i++) {
+    // Limit the number of circles to maxCircles
+    while (circles.length < maxCircles) {
       double startX, startY, endX, endY;
       double dx, dy;
 
-      if (i % 2 == 0) {
+      if (circles.length % 2 == 0) {
         // Move from top-left to bottom-right
         startX = 0;
         startY = 0;
         endX = MediaQuery.of(context).size.width;
         endY = MediaQuery.of(context).size.height;
-        dx = Random().nextDouble() * 2 + 1; // Random speed between 1 and 3
-        dy = Random().nextDouble() * 2 + 1; // Random speed between 1 and 3
+        dx = _random.nextDouble() * 2 + 1; // Random speed between 1 and 3
+        dy = _random.nextDouble() * 2 + 1; // Random speed between 1 and 3
       } else {
         // Move from bottom-right to top-left
         startX = MediaQuery.of(context).size.width;
         startY = MediaQuery.of(context).size.height;
         endX = 0;
         endY = 0;
-        dx = -(Random().nextDouble() * 2 + 1); // Random speed between -1 and -3
-        dy = -(Random().nextDouble() * 2 + 1); // Random speed between -1 and -3
+        dx = -(_random.nextDouble() * 2 + 1); // Random speed between -1 and -3
+        dy = -(_random.nextDouble() * 2 + 1); // Random speed between -1 and -3
       }
 
       circles.add(
         Circle(
           color: getRandomBlue().withOpacity(1.0),
-          size: Random().nextDouble() * 150 + 150,
+          size: _random.nextDouble() * 150 + 150,
           x: startX,
           y: startY,
           endX: endX,
@@ -122,8 +146,8 @@ class _CircleAnimationState extends State<CircleAnimation> {
   }
 
   Color getRandomBlue() {
-    final Random random = Random();
-    final int blue = random.nextInt(256); // Random blue value between 0 and 255
+    final int blue =
+        _random.nextInt(256); // Random blue value between 0 and 255
 
     return Color.fromARGB(255, 0, 0, blue);
   }
