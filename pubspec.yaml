@@ -39,6 +39,7 @@ dependencies:
   lottie: ^3.1.0
   sidebarx: ^0.17.1
   url_launcher: ^6.2.6
+  animated_text_kit: ^4.2.2
 
 dev_dependencies:
   flutter_test:

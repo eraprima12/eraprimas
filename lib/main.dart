@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:eraprimas/widget/animatedobj.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -126,7 +127,39 @@ class LargeChild extends StatelessWidget {
                       ],
                     ),
                   ),
-
+                  Row(
+                    children: [
+                      Text(
+                        "Enthusiast in ",
+                        style: GoogleFonts.montserrat(
+                          textStyle: const TextStyle(
+                            fontSize: 40,
+                            color: Color(0xFF8591B0),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        child: DefaultTextStyle(
+                          style: GoogleFonts.montserrat(
+                            textStyle: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 40.0,
+                                fontStyle: FontStyle.italic),
+                          ),
+                          child: AnimatedTextKit(
+                            repeatForever: true,
+                            animatedTexts: [
+                              FadeAnimatedText('Flutter'),
+                              FadeAnimatedText('Dart'),
+                              FadeAnimatedText('Firebase'),
+                              FadeAnimatedText('Coffee'),
+                            ],
+                            onTap: () {},
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                   const SizedBox(
                     height: 40,
                   ),
@@ -190,6 +223,39 @@ class SmallChild extends StatelessWidget {
                   ),
                 ],
               ),
+            ),
+            Row(
+              children: [
+                Text(
+                  "Enthusiast in ",
+                  style: GoogleFonts.montserrat(
+                    textStyle: const TextStyle(
+                      fontSize: 30,
+                      color: Color(0xFF8591B0),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  child: DefaultTextStyle(
+                    style: GoogleFonts.montserrat(
+                      textStyle: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30.0,
+                          fontStyle: FontStyle.italic),
+                    ),
+                    child: AnimatedTextKit(
+                      repeatForever: true,
+                      animatedTexts: [
+                        FadeAnimatedText('Flutter'),
+                        FadeAnimatedText('Dart'),
+                        FadeAnimatedText('Firebase'),
+                        FadeAnimatedText('Coffee'),
+                      ],
+                      onTap: () {},
+                    ),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(
               height: 30,
