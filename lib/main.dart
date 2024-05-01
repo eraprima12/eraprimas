@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:eraprimas/widget/animatedobj.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
@@ -47,7 +48,7 @@ class HomePage extends StatelessWidget {
       ),
       body: Stack(
         children: <Widget>[
-          // const CircleAnimation(),
+          const CircleAnimation(),
           _buildFrostedBackground(),
           ListView(
             children: const [
