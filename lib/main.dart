@@ -1,64 +1,61 @@
 import 'dart:ui';
-
-import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:eraprimas/widget/animatedobj.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'widget/navbar.dart';
 import 'utils/responsive.dart';
 
-void main() => runApp(MaterialApp(
+void main() => runApp(const MyApp());
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
       title: 'Era Prima S',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
       home: const HomePage(),
-    ));
+    );
+  }
+}
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Color(0xFFF8FBFF),
-            Color(0xFFFCFDFD),
-          ],
+    return Scaffold(
+      drawer: Drawer(
+        child: ListView.builder(
+          itemCount: navLinks.length,
+          itemBuilder: (context, index) {
+            return ListTile(
+              leading: Icon(navLinks[index]["icon"]),
+              title: Text(navLinks[index]["name"]),
+              onTap: () {
+                Get.back(); // Close the drawer
+              },
+            );
+          },
         ),
       ),
-      child: Scaffold(
-        drawer: Drawer(
-          child: ListView.builder(
-            itemCount: navLinks.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                leading: Icon(navLinks[index]["icon"]),
-                title: Text(navLinks[index]["name"]),
-                onTap: () {
-                  Navigator.pop(context); // Close the drawer
-                },
-              );
-            },
+      body: Stack(
+        children: <Widget>[
+          // const CircleAnimation(),
+          _buildFrostedBackground(),
+          ListView(
+            children: const [
+              NavBar(),
+              Body(),
+            ],
           ),
-        ),
-        backgroundColor: Colors.transparent,
-        body: Stack(
-          children: <Widget>[
-            const CircleAnimation(),
-            _buildFrostedBackground(),
-            ListView(
-              children: const [
-                NavBar(),
-                Body(),
-              ],
-            ),
-          ],
-        ),
+        ],
       ),
     );
   }
