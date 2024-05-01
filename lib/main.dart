@@ -1,12 +1,14 @@
+import 'dart:ui';
+
+import 'package:eraprimas/widget/animatedobj.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'widget/navbar.dart';
 import 'utils/responsive.dart';
-import 'widget/search.dart';
 
 void main() => runApp(MaterialApp(
-      title: 'Flutter Landing Page',
+      title: 'Era Prima S',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -21,14 +23,40 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-          gradient: LinearGradient(colors: [
-        Color(0xFFF8FBFF),
-        Color(0xFFFCFDFD),
-      ])),
+        gradient: LinearGradient(
+          colors: [
+            Color(0xFFF8FBFF),
+            Color(0xFFFCFDFD),
+          ],
+        ),
+      ),
       child: Scaffold(
+        drawer: Drawer(
+          child: ListView.builder(
+            itemCount: navLinks.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                leading: Icon(navLinks[index]["icon"]),
+                title: Text(navLinks[index]["name"]),
+                onTap: () {
+                  Navigator.pop(context); // Close the drawer
+                },
+              );
+            },
+          ),
+        ),
         backgroundColor: Colors.transparent,
-        body: ListView(
-          children: [NavBar(), const Body()],
+        body: Stack(
+          children: <Widget>[
+            const CircleAnimation(),
+            _buildFrostedBackground(),
+            ListView(
+              children: const [
+                NavBar(),
+                Body(),
+              ],
+            ),
+          ],
         ),
       ),
     );
@@ -61,7 +89,7 @@ class LargeChild extends StatelessWidget {
             alignment: Alignment.centerRight,
             widthFactor: .6,
             child: Lottie.asset(
-              'assets/dashboard.json',
+              'assets/dashboards.json',
             ),
           ),
           FractionallySizedBox(
@@ -93,7 +121,7 @@ class LargeChild extends StatelessWidget {
                           style: TextStyle(
                               fontSize: 60,
                               fontWeight: FontWeight.bold,
-                              color: Colors.black87),
+                              color: Color(0xFF8591B0)),
                         )
                       ],
                     ),
@@ -111,6 +139,17 @@ class LargeChild extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget _buildFrostedBackground() {
+  return Positioned.fill(
+    child: BackdropFilter(
+      filter: ImageFilter.blur(sigmaX: 50, sigmaY: 50),
+      child: Container(
+        color: Colors.transparent,
+      ),
+    ),
+  );
 }
 
 class SmallChild extends StatelessWidget {
@@ -136,14 +175,19 @@ class SmallChild extends StatelessWidget {
             ),
             RichText(
               text: const TextSpan(
-                style: TextStyle(fontSize: 40, color: Color(0xFF8591B0)),
+                style: TextStyle(
+                  fontSize: 40,
+                  color: Color(0xFF8591B0),
+                ),
                 children: <TextSpan>[
                   TextSpan(
-                      text: "Era Prima S",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 40,
-                          color: Colors.black87)),
+                    text: "Era Prima S",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 40,
+                      color: Color(0xFF8591B0),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -152,7 +196,7 @@ class SmallChild extends StatelessWidget {
             ),
             Center(
               child: Lottie.asset(
-                'assets/dashboard.json',
+                'assets/dashboards.json',
               ),
             ),
             const SizedBox(
